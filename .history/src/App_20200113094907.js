@@ -25,14 +25,14 @@ export default class App extends Component {
   } */
 
   nextProperty = () => {
-    const newIndex = this.state.serviceImg.id + 1;
+    const newIndex = this.state.serviceImg.index + 1;
     this.setState({
       serviceImg: servicesImg.servicesImg[newIndex]
     })
   }
 
   prevProperty = () => {
-    const newIndex = this.state.serviceImg.id - 1;
+    const newIndex = this.state.serviceImg.index - 1;
     this.setState({
       serviceImg: servicesImg.servicesImg[newIndex]
     })
@@ -44,11 +44,11 @@ export default class App extends Component {
       <div className="app">
         <button
           onClick={() => this.nextProperty()}
-          disabled={serviceImg.id === servicesImg.lenght - 1}
+          disabled={serviceImg.index === servicesImg.lenght - 1}
         >Next</button>
         <button
           onClick={() => this.prevProperty()}
-          disabled={serviceImg.id === 0}
+          disabled={serviceImg.index === 0}
         >Prev</button>
 
         <div className="page">

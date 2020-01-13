@@ -5,7 +5,7 @@ import data from '/components/Services'
 export default class App extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       servicesImg: data.servicesImg,
       serviceImg: data.servicesImg[0]
@@ -25,14 +25,14 @@ export default class App extends Component {
   } */
 
   nextProperty = () => {
-    const newIndex = this.state.serviceImg.id + 1;
+    const newIndex = this.state.serviceImg.index + 1;
     this.setState({
       serviceImg: servicesImg.servicesImg[newIndex]
     })
   }
 
   prevProperty = () => {
-    const newIndex = this.state.serviceImg.id - 1;
+    const newIndex = this.state.serviceImg.index - 1;
     this.setState({
       serviceImg: servicesImg.servicesImg[newIndex]
     })
@@ -41,19 +41,15 @@ export default class App extends Component {
   render() {
     const { servicesImg, serviceImg } = this.state;
     return (
-      <div className="app">
+      <div className="principal">
         <button
           onClick={() => this.nextProperty()}
-          disabled={serviceImg.id === servicesImg.lenght - 1}
+          disabled={serviceImg.index === data.servicesImg.lenght - 1}
         >Next</button>
         <button
           onClick={() => this.prevProperty()}
-          disabled={serviceImg.id === 0}
+          disabled={serviceImg.index === 0}
         >Prev</button>
-
-        <div className="page">
-          <Card property={serviceImg} />
-        </div>
       </div>
     )
   }
