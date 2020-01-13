@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.scss';
+import './App.css';
 import Card from './Card';
 import data from './data/data'
 
@@ -43,6 +43,11 @@ class App extends Component {
         >Prev</button>
 
         <div className="page">
+          <section>
+            <img src={logo} className="App-logo" alt="logo" />
+            <h1>Image slideshow React tutorial.</h1>
+          </section>
+
           <div className="col">
             <div className={`cards-slider active-slide-${property.index}`}>
               <div className="cards-slider-wrapper" style={{
