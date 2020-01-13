@@ -14,14 +14,14 @@ class App extends Component {
   }
 
   nextService = () => {
-    const newIndex = this.state.service._id + 1;
+    const newIndex = this.state.service.id + 1;
     this.setState({
       service: data.services[newIndex]
     })
   }
 
   prevService = () => {
-    const newIndex = this.state.service._id - 1;
+    const newIndex = this.state.service.id - 1;
     this.setState({
       service: data.services[newIndex]
     })
@@ -31,23 +31,24 @@ class App extends Component {
     const { services, service } = this.state;
     return (
       <div className="App">
+
         <button
-          onClick={() => this.nextService()}
-          disabled={service._id === data.services.length - 1}
+          onClick={() => this.nextProperty()}
+          disabled={property.index === data.properties.length - 1}
         >Next</button>
         <button
-          onClick={() => this.prevService()}
-          disabled={service._id === 0}
+          onClick={() => this.prevProperty()}
+          disabled={property.index === 0}
         >Prev</button>
 
         <div className="page">
           <div className="col">
-            <div className={`cards-slider active-slide-${service._id}`}>
+            <div className={`cards-slider active-slide-${property.index}`}>
               <div className="cards-slider-wrapper" style={{
-                'transform': `translateX(-${service._id * (100 / services.length)}%)`
+                'transform': `translateX(-${property.index * (100 / properties.length)}%)`
               }}>
                 {
-                  services.map(service => <Card key={service._id} service={service} />)
+                  properties.map(property => <Card key={property._id} property={property} />)
                 }
               </div>
             </div>
