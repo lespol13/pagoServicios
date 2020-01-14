@@ -30,7 +30,15 @@ class App extends Component {
   render() {
     const { services, service } = this.state;
     return (
-      <div className="App">
+      <div className="App">        
+        <button
+          onClick={() => this.prevService()}
+          disabled={service._id === 0}
+        >Anterior</button>
+        <button
+          onClick={() => this.nextService()}
+          disabled={service._id === data.services.length - 1}
+        >Siguiente</button>
 
         <div className="page">
           <div className="col">
@@ -44,24 +52,9 @@ class App extends Component {
               </div>
             </div>
           </div>
-        </div>
-        
-        <div className="buttonContainer">
-          <div className="left">
-            <button
-              onClick={() => this.prevService()}
-              disabled={service._id === 0}
-            >Anterior</button>
-          </div>
-          <div className="right">
-            <button
-              onClick={() => this.nextService()}
-              disabled={service._id === data.services.length - 1}
-            >Siguiente</button>
-          </div>
-        </div>
 
-      </div >
+        </div>
+      </div>
     );
   }
 }

@@ -31,7 +31,6 @@ class App extends Component {
     const { services, service } = this.state;
     return (
       <div className="App">
-
         <div className="page">
           <div className="col">
             <div className={`cards-slider active-slide-${service._id}`}>
@@ -44,24 +43,17 @@ class App extends Component {
               </div>
             </div>
           </div>
-        </div>
-        
-        <div className="buttonContainer">
-          <div className="left">
-            <button
-              onClick={() => this.prevService()}
-              disabled={service._id === 0}
-            >Anterior</button>
-          </div>
-          <div className="right">
-            <button
-              onClick={() => this.nextService()}
-              disabled={service._id === data.services.length - 1}
-            >Siguiente</button>
-          </div>
-        </div>
 
-      </div >
+          <button
+            onClick={() => this.prevService()}
+            disabled={service._id === 0}
+          >Prev</button>
+          <button
+            onClick={() => this.nextService()}
+            disabled={service._id === data.services.length - 1}
+          >Next</button>
+        </div>
+      </div>
     );
   }
 }

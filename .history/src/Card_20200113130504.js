@@ -6,8 +6,10 @@ const Card = ({ service }) => {
     return (
         <div id={`card-${_id}`} className="card">
             <img src={url} alt={service} />
-            <div className="name">
-                <p>{nombre}<br />
+            <div className="details">
+                {/* <span className="index">{_id + 1}</span> */}
+                <p className="location">
+                    {nombre}<br />
                 </p>
             </div>
         </div>

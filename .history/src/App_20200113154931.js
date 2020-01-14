@@ -31,22 +31,7 @@ class App extends Component {
     const { services, service } = this.state;
     return (
       <div className="App">
-
-        <div className="page">
-          <div className="col">
-            <div className={`cards-slider active-slide-${service._id}`}>
-              <div className="cards-slider-wrapper" style={{
-                'transform': `translateX(-${service._id * (100 / services.length)}%)`
-              }}>
-                {
-                  services.map(service => <Card key={service._id} service={service} />)
-                }
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="buttonContainer">
+        <div>
           <div className="left">
             <button
               onClick={() => this.prevService()}
@@ -61,6 +46,20 @@ class App extends Component {
           </div>
         </div>
 
+        <div className="page">
+          <div className="col">
+            <div className={`cards-slider active-slide-${service._id}`}>
+              <div className="cards-slider-wrapper" style={{
+                'transform': `translateX(-${service._id * (100 / services.length)}%)`
+              }}>
+                {
+                  services.map(service => <Card key={service._id} service={service} />)
+                }
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div >
     );
   }

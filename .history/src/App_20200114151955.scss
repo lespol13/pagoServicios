@@ -68,7 +68,7 @@ button:hover {
     border-color: #f3f3f3;
   }
   img {
-    max-width: calc(100%);
+    max-width: calc(200%);
     margin: 0 auto;
     display: block;
     border: 1px solid black;
@@ -143,7 +143,7 @@ $i: 0;
 
 .cards-slider {
   position: relative;
-  max-width: 226px;
+  max-width: 400px;
   margin: 0 auto;
 
   &:after {

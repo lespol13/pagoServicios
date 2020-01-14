@@ -6,7 +6,7 @@ const Card = ({ service }) => {
     return (
         <div id={`card-${_id}`} className="card">
             <img src={url} alt={service} />
-            <div className="name">
+            <div className="details">
                 <p>{nombre}<br />
                 </p>
             </div>

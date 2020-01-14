@@ -14,12 +14,13 @@ body {
   width: 1024px;
   height: 768px;
   overflow: hidden;
-}
+  }
 
 .buttonContainer {
   height: 130px;
   width: 100%;
-  margin-top: 5%;
+  border: 1px solid black;
+  margin-top: 8%;
 }
 
 .left {
@@ -48,7 +49,7 @@ button {
 }
 
 button:hover {
-  box-shadow: 3px 3px 6px black;
+  box-shadow: 3px 3px 6px #255a4d;
   background-color: #255a4d;
   color: white;
 }
@@ -71,7 +72,6 @@ button:hover {
     max-width: calc(100%);
     margin: 0 auto;
     display: block;
-    border: 1px solid black;
   }
   .index {
     background-color: rgba(0, 0, 0, 0.2);
@@ -88,7 +88,6 @@ button:hover {
     position: relative;
     font-size: 20px;
     font-weight: bold;
-    color: white;
   }
 }
 
@@ -116,7 +115,7 @@ $i: 0;
     transform: scale(1);
     background-color: #255a4d;
     border-color: #255a4d;
-    box-shadow: 3px 3px 6px black;
+    box-shadow: 0 3px 5px 5px #255a4d;
   }
 }
 
@@ -129,7 +128,7 @@ $i: 0;
     display: block;
     width: 50%;
     height: 120%;
-
+    
     position: absolute;
     top: 0;
     left: 0;
@@ -138,6 +137,7 @@ $i: 0;
   &:after {
     left: auto;
     right: 0;
+    
   }
 }
 
