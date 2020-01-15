@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Card from './Card';
-import data from './data/data'
+import { data, data2 } from './data/data'
 
 class App extends Component {
 
@@ -13,12 +13,24 @@ class App extends Component {
     }
   }
 
-  // getServices = () => {
-  //   this.setState({
-  //     services: data2.services,
+  componentDidMount() {
+    fetch('http://localhost:8090/test')
+      .then(res => { return res.json() })
+      .then(json => {
+        this.setState({
+          services: json.docs,
+        })
+      }).catch((err) => {
+        console.log(err);
+      });
+  }
 
-  //   })
-  // }
+  getServices = () => {
+    this.setState({
+      services: data2.services,
+
+    })
+  }
   nextService = () => {
     const newIndex = this.state.service._id + 1;
     this.setState({

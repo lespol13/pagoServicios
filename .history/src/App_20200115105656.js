@@ -1,35 +1,48 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Card from './Card';
-import data from './data/data'
 
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      services: data.services,
-      service: data.services[0]
+      services: [],
+      service: []
     }
   }
 
-  // getServices = () => {
-  //   this.setState({
-  //     services: data2.services,
+  componentDidMount() {
+    fetch('http://localhost:8090/test')
+      .then(res => { return res.json() })
+      .then(json => {
+        this.setState({
+          services: json.docs,
+          service: json.docs[0]
+        })
+      }).catch((err) => {
+        console.log(err);
+      });
+  }
 
-  //   })
-  // }
+  /* getServices = () => {
+    this.setState({
+      services: data2.services,
+
+    })
+  } */
+
   nextService = () => {
     const newIndex = this.state.service._id + 1;
     this.setState({
-      service: data.services[newIndex]
+      service: json.services[newIndex]
     })
   }
 
   prevService = () => {
     const newIndex = this.state.service._id - 1;
     this.setState({
-      service: data.services[newIndex]
+      service: json.services[newIndex]
     })
   }
 

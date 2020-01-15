@@ -8,28 +8,33 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      services: data.services,
-      service: data.services[0]
+      services: [],
+      service: []
     }
   }
 
-  // getServices = () => {
-  //   this.setState({
-  //     services: data2.services,
+  componentDidMount() {
+    var data = getServices(this.state.services, this.state.service);
+  }
 
-  //   })
-  // }
-  nextService = () => {
-    const newIndex = this.state.service._id + 1;
+  /* getServices = () => {
     this.setState({
-      service: data.services[newIndex]
+      services: data2.services,
+
+    })
+  } */
+
+  nextService = () => {
+    const newIndex = data.docs._id + 1;
+    this.setState({
+      service: data.docs[newIndex]
     })
   }
 
   prevService = () => {
-    const newIndex = this.state.service._id - 1;
+    const newIndex = data.docs._id - 1;
     this.setState({
-      service: data.services[newIndex]
+      service: data.docs[newIndex]
     })
   }
 
@@ -62,7 +67,7 @@ class App extends Component {
           <div className="right">
             <button
               onClick={() => this.nextService()}
-              disabled={service._id === data.services.length - 1}
+              disabled={service._id === data.docs - 1}
             >Siguiente</button>
           </div>
         </div>

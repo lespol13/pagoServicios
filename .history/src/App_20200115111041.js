@@ -1,35 +1,48 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Card from './Card';
-import data from './data/data'
 
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      services: data.services,
-      service: data.services[0]
+      services: [],
+      service: []
     }
   }
 
-  // getServices = () => {
-  //   this.setState({
-  //     services: data2.services,
+  componentDidMount() {
+    fetch('http://localhost:8090/test')
+      .then(res => { return res.json() })
+      .then(json => {
+        this.setState({
+          services: json.docs,
+          service: json.docs[0]
+        })
+      }).catch((err) => {
+        console.log(err);
+      });
+  }
 
-  //   })
-  // }
+  /* getServices = () => {
+    this.setState({
+      services: data2.services,
+
+    })
+  } */
+
   nextService = () => {
     const newIndex = this.state.service._id + 1;
     this.setState({
-      service: data.services[newIndex]
+      service: this.state.services[newIndex]
     })
   }
 
   prevService = () => {
     const newIndex = this.state.service._id - 1;
     this.setState({
-      service: data.services[newIndex]
+      service: this.state.services[newIndex]
     })
   }
 
@@ -62,7 +75,7 @@ class App extends Component {
           <div className="right">
             <button
               onClick={() => this.nextService()}
-              disabled={service._id === data.services.length - 1}
+              disabled={service._id === this.state.services - 1}
             >Siguiente</button>
           </div>
         </div>

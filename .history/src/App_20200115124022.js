@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Card from './Card';
-import data from './data/data'
+import { data, data2 } from './data/data'
 
 class App extends Component {
 
