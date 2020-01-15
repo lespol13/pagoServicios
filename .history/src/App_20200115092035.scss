@@ -10,7 +10,7 @@ body {
 .App {
   text-align: center;
   position: relative;
-  margin-top: 12%;
+  margin-top: 15%;
   width: 1024px;
   height: 768px;
   overflow: hidden;
@@ -19,7 +19,7 @@ body {
 .buttonContainer {
   height: 130px;
   width: 100%;
-  margin-top: 5%;
+  border: 1px solid black;
 }
 
 .left {
@@ -118,6 +118,7 @@ $i: 0;
     display: block;
     width: 50%;
     height: 120%;
+
     position: absolute;
     top: 0;
     left: 0;

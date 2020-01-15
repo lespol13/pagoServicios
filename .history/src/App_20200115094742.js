@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Card from './Card';
-import { data, data2 } from './data/data'
+import {data, data2} from './data/data'
 
 class App extends Component {
 
@@ -13,12 +13,6 @@ class App extends Component {
     }
   }
 
-  getServices = () => {
-    this.setState({
-      services: data2.services,
-
-    })
-  }
   nextService = () => {
     const newIndex = this.state.service._id + 1;
     this.setState({
@@ -51,7 +45,7 @@ class App extends Component {
             </div>
           </div>
         </div>
-
+        
         <div className="buttonContainer">
           <div className="left">
             <button
