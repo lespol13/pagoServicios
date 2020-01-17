@@ -85,8 +85,7 @@ class App extends Component {
             >Anterior</button>
           </div>
           <div className="right">
-            <button
-              onClick={() => this.nextService()}
+y              onClick={() => this.nextService()}
               disabled={service._id === this.state.services.length - 1}
             >Siguiente</button>
           </div>

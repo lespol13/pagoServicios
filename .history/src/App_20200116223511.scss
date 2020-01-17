@@ -80,7 +80,7 @@ body {
     color: white;
     width: 100%;
     height: 30%;
-    background-color: white;
+    background-color: #255a4d;
     margin-top: 1%;
     border: none;
   }
@@ -100,7 +100,11 @@ body {
     border-color: white;
     transition: opacity 300ms linear, border-color 300ms linear, background-color 300ms linear,
       transform 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
-  }
+        }
+}
+
+.cards-slider-wrapper button{
+background-color: white;
 }
 
 $i: 0;
@@ -111,31 +115,26 @@ $i: 0;
     background-color: #255a4d;
     border-color: #255a4d;
     box-shadow: 3px 3px 6px black;
-    button {
-      background-color: #255a4d;
-    }
   }
 }
 
 .col {
   height: 300px;
   position: relative;
-   &:before,
+  &:before,
   &:after {
     content: "";
     display: block;
     width: 50%;
-    height: 50%;
+    height: 120%;
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 0;
-    
+    z-index: 2;
   }
   &:after {
     left: auto;
     right: 0;
-    position: absolute;
   }
 }
 
@@ -148,18 +147,9 @@ $i: 0;
     content: "";
     display: block;
     width: 100%;
-    height: 100px;
+    height: 264px;
     position: absolute;
     top: 0;
     left: 0;
-    border: 1px solid black;
   }
-}
-
-.prueba {
-  width: 100px;
-  height: 300px;
-}
-.prueba:hover {
-  background-color: black;
 }

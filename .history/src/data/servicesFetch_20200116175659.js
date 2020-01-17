@@ -1,4 +1,4 @@
-function getServices(id) {
+export function getServices(id) {
     return fetch('/crdrdr/crdincmg', {
         method: 'POST',
         headers: {

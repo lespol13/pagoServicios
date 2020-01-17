@@ -5,7 +5,7 @@ const Card = ({ service }) => {
     const { _id, url, nombre } = service;
     return (
         <div id={`card-${_id}`} className="card">
-            <img src={url} alt={service} />
+            <img src={url} alt={service} onClick={props.onClick} />
             <div className="name">
                 <p>{nombre}<br />
                 </p>

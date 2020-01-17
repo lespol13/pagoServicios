@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.scss';
-import Card from './components/Card';
+import Card from './Card';
 // import getServices from './data/servicesFetch'
 // import data from './data/servicesFetch'
 
@@ -11,20 +11,25 @@ class App extends Component {
     this.state = {
       services: [],
       service: [],
-      // loading: false
+      loading: false
     }
   }
 
   async componentDidMount() {
-    // { this.setState({ loading: true }) }
-    const response = await fetch('http://localhost:8090/test');
-    const data = await response.json();
-    this.setState({
-      services: data.docs,
-      service: data.docs[0],
-      // loading: false
-    })
+    { this.setState({ loading: true }) }
+    try {
+      const response = await fetch('http://localhost:8090/test');
+      const data = await response.json();
+      this.setState({
+        services: data.docs,
+        service: data.docs[0],
+        loading: false
+      })
+    } catch (err) {
+      console.log(err);
+    }
   }
+
 
   nextService = () => {
     const newIndex = (this.state.service._id) + 1;
@@ -40,27 +45,27 @@ class App extends Component {
     })
   }
 
-  // onClick = (id) => {
-  //   // this.setState({ loading: true })
-  //   fetch('data.json')
-  //     .then(res => { return res.json() })
-  //     .then(json => {
-  //       this.setState({
-  //         services: json.docs,
-  //         service: json.docs[0],
-  //         // loading: false
-  //       })
-  //     }).catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
+  onClick = (id) => {
+    this.setState({ loading: true })
+    fetch('data.json')
+      .then(res => { return res.json() })
+      .then(json => {
+        this.setState({
+          services: json.docs,
+          service: json.docs[0],
+          loading: false
+        })
+      }).catch((err) => {
+        console.log(err);
+      });
+  }
 
   render() {
-    const { services, service } = this.state;
+    const { services, service, loading } = this.state;
 
-    // if (loading) {
-    //   return <p>Cargando...</p>
-    // }
+    if (loading) {
+      return <p>Cargando...</p>
+    }
 
     return (
       < div className="App" >
@@ -71,7 +76,7 @@ class App extends Component {
                 'transform': `translateX(-${service._id * (100 / services.length)}%)`
               }}>
                 {
-                  services.map(service => <Card key={service._id} service={service} /*event={this.onClick(service._id)}*/ />)
+                  services.map(service => <Card key={service._id} service={service} event={this.onClick(service._id)} />)
                 }
               </div>
             </div>
@@ -91,6 +96,7 @@ class App extends Component {
             >Siguiente</button>
           </div>
         </div>
+
       </div >
     );
   }

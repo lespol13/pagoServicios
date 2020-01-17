@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Card from './components/Card';
+import ButtonName from './components/buttonName'
 // import getServices from './data/servicesFetch'
 // import data from './data/servicesFetch'
 
@@ -40,6 +41,10 @@ class App extends Component {
     })
   }
 
+  holaMundo = () => {
+    console.log("Hola Mundo")
+  }
+
   // onClick = (id) => {
   //   // this.setState({ loading: true })
   //   fetch('data.json')
@@ -71,7 +76,10 @@ class App extends Component {
                 'transform': `translateX(-${service._id * (100 / services.length)}%)`
               }}>
                 {
-                  services.map(service => <Card key={service._id} service={service} /*event={this.onClick(service._id)}*/ />)
+                  services.map(service => <div><Card key={service._id} service={service} /*event={this.onClick(service._id)}*/ />
+                    <ButtonName event={() => this.holaMundo()}
+                      id={service._id}
+                      name={this.state.service.nombre} /></div>)
                 }
               </div>
             </div>

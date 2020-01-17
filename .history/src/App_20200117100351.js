@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.scss';
-import Card from './components/Card';
+import Card from './Card';
 // import getServices from './data/servicesFetch'
 // import data from './data/servicesFetch'
 
@@ -40,20 +40,20 @@ class App extends Component {
     })
   }
 
-  // onClick = (id) => {
-  //   // this.setState({ loading: true })
-  //   fetch('data.json')
-  //     .then(res => { return res.json() })
-  //     .then(json => {
-  //       this.setState({
-  //         services: json.docs,
-  //         service: json.docs[0],
-  //         // loading: false
-  //       })
-  //     }).catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
+  onClick = (id) => {
+    // this.setState({ loading: true })
+    fetch('data.json')
+      .then(res => { return res.json() })
+      .then(json => {
+        this.setState({
+          services: json.docs,
+          service: json.docs[0],
+          // loading: false
+        })
+      }).catch((err) => {
+        console.log(err);
+      });
+  }
 
   render() {
     const { services, service } = this.state;
@@ -71,7 +71,7 @@ class App extends Component {
                 'transform': `translateX(-${service._id * (100 / services.length)}%)`
               }}>
                 {
-                  services.map(service => <Card key={service._id} service={service} /*event={this.onClick(service._id)}*/ />)
+                  services.map(service => <Card key={service._id} service={service} event={this.onClick(service._id)} />)
                 }
               </div>
             </div>
@@ -95,5 +95,7 @@ class App extends Component {
     );
   }
 }
+
+
 
 export default App;

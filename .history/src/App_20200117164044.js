@@ -71,7 +71,8 @@ class App extends Component {
                 'transform': `translateX(-${service._id * (100 / services.length)}%)`
               }}>
                 {
-                  services.map(service => <Card key={service._id} service={service} /*event={this.onClick(service._id)}*/ />)
+                  services.map(service => <div><Card key={service._id} service={service} /*event={this.onClick(service._id)}*/ />
+                  </div>)
                 }
               </div>
             </div>

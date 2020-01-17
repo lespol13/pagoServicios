@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.scss';
-import Card from './components/Card';
+import Card from './Card';
 // import getServices from './data/servicesFetch'
 // import data from './data/servicesFetch'
 
