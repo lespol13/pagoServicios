@@ -9,7 +9,15 @@ export default class Card extends Component {
         }
     }
 
+    // holaMundo = () => {
+    //     console.log("Hola Mundo")
+    // }
     componentWillReceiveProps(nextProps) {
+        // if(nextProps.someValue!==this.props.someValue){
+        //   //Perform some operation
+        //   this.setState({someState: someValue });
+        //   this.classMethod();
+        // }
         this.setState({
             service: nextProps.service
         })

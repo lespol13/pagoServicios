@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.scss';
 import Card from './components/Card';
 // import getServices from './data/servicesFetch'
+// import data from './data/servicesFetch'
 
 class App extends Component {
 
@@ -10,18 +11,18 @@ class App extends Component {
     this.state = {
       services: [],
       service: [],
-      loading: false
+      // loading: false
     }
   }
 
   async componentDidMount() {
-    this.setState({ loading: true })
-    const response = await fetch('http://10.255.11.201:8090/datos/findDatos');
+    // { this.setState({ loading: true }) }
+    const response = await fetch('http://localhost:8090/test');
     const data = await response.json();
     this.setState({
-      services: data.services,
-      service: data.services[0],
-      loading: false
+      services: data.docs,
+      service: data.docs[0],
+      // loading: false
     })
   }
 
@@ -39,32 +40,27 @@ class App extends Component {
     })
   }
 
-  handleClick = async (id) => {
-    this.setState({ loading: true })
-    const config = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ "dato": id })
-    };
-    const response = await fetch('http://10.255.11.201:8090/datos/insert', config);
-    const data = await response.json();
-    console.log(data);
-    this.setState({
-      services: data[Object.keys(data)[0]],
-      service: data[Object.keys(data)[0]][0],
-      loading: false
-
-    })
+  handleClick = (id) => {
+    // this.setState({ loading: true })
+    fetch('data.json')
+      .then(res => { return res.json() })
+      .then(json => {
+        this.setState({
+          services: json.docs,
+          service: json.docs[0],
+          // loading: false
+        })
+      }).catch((err) => {
+        console.log(err);
+      });
   }
 
   render() {
     const { services, service } = this.state;
-    
-    if (this.state.loading) {
-      return <p className="loading">Cargando...</p>
-    }
+
+    // if (loading) {
+    //   return <p>Cargando...</p>
+    // }
 
     return (
       < div className="App" >
@@ -75,7 +71,7 @@ class App extends Component {
                 'transform': `translateX(-${service._id * (100 / services.length)}%)`
               }}>
                 {
-                  services.map(service => <Card key={service._id} service={service} event={() => this.handleClick(service._id)} />)
+                  services.map(service => <Card key={service._id} service={service} event={() => this.handleClick(/*service._id)*/} />)
                 }
               </div>
             </div>

@@ -127,6 +127,7 @@ $i: 0;
     top: 0;
     left: 0;
     z-index: 0;
+    border: 1px solid black;
   }
   &:after {
     left: auto;
@@ -149,12 +150,4 @@ $i: 0;
     top: 0;
     left: 0;
   }
-}
-
-.loading {
-  font-size: 50px;
-  text-align: center;
-  margin-top: 350px;
-  color: #255a4d;
-  font-weight: bold;
 }

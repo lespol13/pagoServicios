@@ -10,6 +10,7 @@ export default class Card extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+
         this.setState({
             service: nextProps.service
         })

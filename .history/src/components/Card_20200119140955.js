@@ -9,14 +9,11 @@ export default class Card extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            service: nextProps.service
-        })
-    }
+    // holaMundo = () => {
+    //     console.log("Hola Mundo")
+    // }
 
     render() {
-
         return (
             <div id={`card-${this.state.service._id}`} className="card" onClick={this.props.event}>
                 <img src={this.state.service.url} alt={this.state.service} />

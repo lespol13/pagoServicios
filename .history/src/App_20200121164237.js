@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.scss';
 import Card from './components/Card';
 // import getServices from './data/servicesFetch'
+// import data from './data/servicesFetch'
 
 class App extends Component {
 
@@ -61,7 +62,8 @@ class App extends Component {
 
   render() {
     const { services, service } = this.state;
-    
+    // console.log(this.state)
+
     if (this.state.loading) {
       return <p className="loading">Cargando...</p>
     }

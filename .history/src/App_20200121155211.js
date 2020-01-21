@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.scss';
 import Card from './components/Card';
 // import getServices from './data/servicesFetch'
+// import data from './data/servicesFetch'
 
 class App extends Component {
 
@@ -10,18 +11,18 @@ class App extends Component {
     this.state = {
       services: [],
       service: [],
-      loading: false
+      // loading: false
     }
   }
 
   async componentDidMount() {
-    this.setState({ loading: true })
+    // { this.setState({ loading: true }) }
     const response = await fetch('http://10.255.11.201:8090/datos/findDatos');
     const data = await response.json();
     this.setState({
       services: data.services,
       service: data.services[0],
-      loading: false
+      // loading: false
     })
   }
 
@@ -40,7 +41,7 @@ class App extends Component {
   }
 
   handleClick = async (id) => {
-    this.setState({ loading: true })
+    // this.setState({ loading: true })
     const config = {
       method: 'POST',
       headers: {
@@ -53,18 +54,19 @@ class App extends Component {
     console.log(data);
     this.setState({
       services: data[Object.keys(data)[0]],
-      service: data[Object.keys(data)[0]][0],
-      loading: false
+      service: data[Object.keys(data)[0]][0]
+      // loading: false
 
     })
   }
 
   render() {
     const { services, service } = this.state;
-    
-    if (this.state.loading) {
-      return <p className="loading">Cargando...</p>
-    }
+    // console.log(this.state)
+
+    // if (loading) {
+    //   return <p>Cargando...</p>
+    // }
 
     return (
       < div className="App" >

@@ -122,11 +122,12 @@ $i: 0;
     content: "";
     display: block;
     width: 50%;
-    height: 20%;
+    height: 50%;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 0;
+    border: 1px solid black;
   }
   &:after {
     left: auto;
@@ -149,12 +150,4 @@ $i: 0;
     top: 0;
     left: 0;
   }
-}
-
-.loading {
-  font-size: 50px;
-  text-align: center;
-  margin-top: 350px;
-  color: #255a4d;
-  font-weight: bold;
 }

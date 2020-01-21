@@ -71,6 +71,7 @@ body {
     max-width: calc(100%);
     margin: 0 auto;
     display: block;
+    border: 1px solid black;
   }
   .name {
     position: relative;
@@ -108,9 +109,6 @@ $i: 0;
     background-color: #255a4d;
     border-color: #255a4d;
     box-shadow: 3px 3px 6px black;
-    img {
-      border: 1px solid black;
-    }
   }
 }
 
@@ -122,7 +120,7 @@ $i: 0;
     content: "";
     display: block;
     width: 50%;
-    height: 20%;
+    height: 50%;
     position: absolute;
     top: 0;
     left: 0;
@@ -148,13 +146,6 @@ $i: 0;
     position: absolute;
     top: 0;
     left: 0;
+    border: 1px solid black;
   }
-}
-
-.loading {
-  font-size: 50px;
-  text-align: center;
-  margin-top: 350px;
-  color: #255a4d;
-  font-weight: bold;
 }
