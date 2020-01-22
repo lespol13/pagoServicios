@@ -5,18 +5,12 @@ import Card from './components/Card';
 
 class App extends Component {
 
-  principalServices = [];
-  service = [];
-  subServices = [];
-  // serviceId = null;
-
   constructor(props) {
     super(props);
     this.state = {
       services: [],
       service: [],
-      loading: false,
-      count: 1
+      loading: false
     }
   }
 
@@ -24,11 +18,9 @@ class App extends Component {
     this.setState({ loading: true })
     const response = await fetch('http://10.255.11.201:8090/datos/findDatos');
     const data = await response.json();
-    this.principalServices = data.services;
-    this.service = data.services[0];
     this.setState({
-      services: this.principalServices,
-      service: this.service,
+      services: data.services,
+      service: data.services[0],
       loading: false
     })
   }
@@ -58,37 +50,19 @@ class App extends Component {
     };
     const response = await fetch('http://10.255.11.201:8090/datos/insert', config);
     const data = await response.json();
-    const keys = Object.keys(data);
-    this.subServices = data[keys[0]];
-    this.service = data[keys[0]][0];
+    console.log(data);
     this.setState({
-      services: this.subServices,
-      service: this.service,
-      loading: false,
-      count: this.state.count + 1
+      services: data[Object.keys(data)[0]],
+      service: data[Object.keys(data)[0]][0],
+      loading: false
+
     })
   }
-
-  backToPrincipal = () => {
-    this.setState({
-      services: this.principalServices,
-      service: this.service,
-      count: this.state.count - 1
-    })
-  }
-
-  // idService(id) {
-  //   this.serviceId = id;
-
-  // }
 
   render() {
-    const { services, service, loading, count } = this.state;
-    if (count < 1) {
-      return <p className="loading">Página anterior</p>
-    }
-
-    if (loading) {
+    const { services, service } = this.state;
+    
+    if (this.state.loading) {
       return <p className="loading">Cargando...</p>
     }
 
@@ -101,7 +75,7 @@ class App extends Component {
                 'transform': `translateX(-${service._id * (100 / services.length)}%)`
               }}>
                 {
-                  services.map(service => <Card key={service._id} service={service} /*idService={this.idService(service._id)}*/ event={() => this.handleClick(service._id)} />)
+                  services.map(service => <Card key={service._id} service={service} event={() => this.handleClick(service._id)} />)
                 }
               </div>
             </div>
@@ -113,14 +87,14 @@ class App extends Component {
               onClick={() => this.prevService()}
               disabled={service._id === 0}
             >Anterior</button>
-            <button onClick={() => this.backToPrincipal()}>Regresar</button>
+            <button>Regresar</button>
           </div>
           <div className="right">
             <button
               onClick={() => this.nextService()}
               disabled={service._id === this.state.services.length - 1}
             >Siguiente</button>
-            {/* <button onClick={() => this.handleClick(this.serviceId)}>Seleccionar</button> */}
+            <button>Salir</button>
           </div>
         </div>
       </div >

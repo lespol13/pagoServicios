@@ -8,7 +8,7 @@ class App extends Component {
   principalServices = [];
   service = [];
   subServices = [];
-  // serviceId = null;
+  serviceId = null;
 
   constructor(props) {
     super(props);
@@ -58,6 +58,7 @@ class App extends Component {
     };
     const response = await fetch('http://10.255.11.201:8090/datos/insert', config);
     const data = await response.json();
+    // console.log(data);
     const keys = Object.keys(data);
     this.subServices = data[keys[0]];
     this.service = data[keys[0]][0];
@@ -101,7 +102,7 @@ class App extends Component {
                 'transform': `translateX(-${service._id * (100 / services.length)}%)`
               }}>
                 {
-                  services.map(service => <Card key={service._id} service={service} /*idService={this.idService(service._id)}*/ event={() => this.handleClick(service._id)} />)
+                  services.map(service => <Card key={service._id} service={service} idService={this.idService(service._id)} event={() => this.handleClick(service._id)} />)
                 }
               </div>
             </div>

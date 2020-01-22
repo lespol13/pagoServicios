@@ -17,9 +17,10 @@ body {
 }
 
 .buttonContainer {
-  height: 220px;
+  height: 200px;
   width: 100%;
   // margin-top: 2%;
+  border: 1px solid black;
 }
 
 .buttonContainer button {
@@ -33,7 +34,6 @@ body {
   color: #255a4d;
   text-align: center;
   outline: none;
-  margin-bottom: 3%;
 }
 
 .buttonContainer button:hover {
@@ -116,9 +116,8 @@ $i: 0;
 }
 
 .col {
-  height: 280px;
+  height: 300px;
   position: relative;
-
   &:before,
   &:after {
     content: "";

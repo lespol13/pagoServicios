@@ -8,7 +8,7 @@ class App extends Component {
   principalServices = [];
   service = [];
   subServices = [];
-  // serviceId = null;
+  idService = "";
 
   constructor(props) {
     super(props);
@@ -56,8 +56,10 @@ class App extends Component {
       },
       body: JSON.stringify({ "dato": id })
     };
+    this.idService = id;
     const response = await fetch('http://10.255.11.201:8090/datos/insert', config);
     const data = await response.json();
+    // console.log(data);
     const keys = Object.keys(data);
     this.subServices = data[keys[0]];
     this.service = data[keys[0]][0];
@@ -76,11 +78,6 @@ class App extends Component {
       count: this.state.count - 1
     })
   }
-
-  // idService(id) {
-  //   this.serviceId = id;
-
-  // }
 
   render() {
     const { services, service, loading, count } = this.state;
@@ -101,7 +98,7 @@ class App extends Component {
                 'transform': `translateX(-${service._id * (100 / services.length)}%)`
               }}>
                 {
-                  services.map(service => <Card key={service._id} service={service} /*idService={this.idService(service._id)}*/ event={() => this.handleClick(service._id)} />)
+                  services.map(service => <Card key={service._id} service={service} event={() => this.handleClick(service._id)} />)
                 }
               </div>
             </div>
@@ -120,7 +117,7 @@ class App extends Component {
               onClick={() => this.nextService()}
               disabled={service._id === this.state.services.length - 1}
             >Siguiente</button>
-            {/* <button onClick={() => this.handleClick(this.serviceId)}>Seleccionar</button> */}
+            <button>Seleccionar</button>
           </div>
         </div>
       </div >

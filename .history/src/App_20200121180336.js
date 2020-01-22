@@ -8,7 +8,6 @@ class App extends Component {
   principalServices = [];
   service = [];
   subServices = [];
-  // serviceId = null;
 
   constructor(props) {
     super(props);
@@ -58,6 +57,7 @@ class App extends Component {
     };
     const response = await fetch('http://10.255.11.201:8090/datos/insert', config);
     const data = await response.json();
+    // console.log(data);
     const keys = Object.keys(data);
     this.subServices = data[keys[0]];
     this.service = data[keys[0]][0];
@@ -65,27 +65,24 @@ class App extends Component {
       services: this.subServices,
       service: this.service,
       loading: false,
-      count: this.state.count + 1
+      count: count + 1
+
     })
+
   }
 
-  backToPrincipal = () => {
+  backToFirst = () => {
     this.setState({
       services: this.principalServices,
       service: this.service,
-      count: this.state.count - 1
+      count: count - 1
     })
   }
 
-  // idService(id) {
-  //   this.serviceId = id;
-
-  // }
-
   render() {
     const { services, service, loading, count } = this.state;
-    if (count < 1) {
-      return <p className="loading">Página anterior</p>
+    if (count > 1) {
+      return <p className="loading">PAGINA ANTERIOR</p>
     }
 
     if (loading) {
@@ -101,7 +98,7 @@ class App extends Component {
                 'transform': `translateX(-${service._id * (100 / services.length)}%)`
               }}>
                 {
-                  services.map(service => <Card key={service._id} service={service} /*idService={this.idService(service._id)}*/ event={() => this.handleClick(service._id)} />)
+                  services.map(service => <Card key={service._id} service={service} event={() => this.handleClick(service._id)} />)
                 }
               </div>
             </div>
@@ -113,14 +110,14 @@ class App extends Component {
               onClick={() => this.prevService()}
               disabled={service._id === 0}
             >Anterior</button>
-            <button onClick={() => this.backToPrincipal()}>Regresar</button>
+            <button onClick={() => this.backToFirst()}>Regresar</button>
           </div>
           <div className="right">
             <button
               onClick={() => this.nextService()}
               disabled={service._id === this.state.services.length - 1}
             >Siguiente</button>
-            {/* <button onClick={() => this.handleClick(this.serviceId)}>Seleccionar</button> */}
+            <button>Salir</button>
           </div>
         </div>
       </div >

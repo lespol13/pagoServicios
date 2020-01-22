@@ -8,7 +8,7 @@ class App extends Component {
   principalServices = [];
   service = [];
   subServices = [];
-  // serviceId = null;
+  serviceId = null;
 
   constructor(props) {
     super(props);
@@ -101,7 +101,7 @@ class App extends Component {
                 'transform': `translateX(-${service._id * (100 / services.length)}%)`
               }}>
                 {
-                  services.map(service => <Card key={service._id} service={service} /*idService={this.idService(service._id)}*/ event={() => this.handleClick(service._id)} />)
+                  services.map(service => <Card key={service._id} service={service} idService={this.idService(service._id)} event={() => this.handleClick(service._id)} />)
                 }
               </div>
             </div>

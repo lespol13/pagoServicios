@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 
 export default class Card extends Component {
-    // constructor(props) {
-    //     super(props)
-    //     this.state = {
-    //         service: this.props.service
-    //     }
-    // }
+    constructor(props) {
+        super(props)
+        this.state = {
+            service: this.props.service
+        }
+    }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
