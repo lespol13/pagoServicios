@@ -1,107 +1,140 @@
 import React, { Component } from 'react';
 import './App.scss';
-import Card from './components/Card';
+import Card from './components/card/card.component';
+import Button1 from './components/button1/button.component';
+// import data from './data/services';
+// import data2 from './data/services2';
+import mock from './data/data.mock';
+// import Api from './services/api.service';
+// import services from './data/services';
 // import getServices from './data/servicesFetch'
 
 class App extends Component {
-
   principalServices = [];
   service = [];
   subServices = [];
-  // serviceId = null;
-
+  services = [];
+  // -----------------------------------------------------------
   constructor(props) {
     super(props);
     this.state = {
       services: [],
       service: [],
       loading: false,
-      count: 1
+      carouselIndex: 0,
+      servicesIndex: 0,
+    }
+    this.prevCarouselItem = this.prevCarouselItem.bind(this)
+    this.nextCarouselItem = this.nextCarouselItem.bind(this)
+    this.back = this.back.bind(this)
+  }
+  // -----------------------------------------------------------
+  async componentDidMount() {
+    /*this.setState({ loading: true })*/
+    /* data = await Api.findDatos();
+    this.services[0] = data.services;
+    this.setState({
+      services: this.services[0],
+      service: this.services[0][0],
+      loading: false
+    })*/
+    const {servicesIndex} = this.state;
+    this.services[servicesIndex] = mock;
+    this.setState({
+      services: this.services[servicesIndex],
+      service: this.services[servicesIndex][0]
+    })
+  }
+  // -----------------------------------------------------------
+  updateServices(servicesIndex) {
+    this.setState({
+      servicesIndex,
+      services: this.services[servicesIndex],
+      service: this.services[servicesIndex][0],
+      loading: false,
+      carouselIndex: 0,
+    })
+  }
+  // -----------------------------------------------------------
+  nextCarouselItem() {
+    let { carouselIndex, services } = this.state;
+    if (carouselIndex !== services.length - 1) {
+      carouselIndex++;
+      this.updateCarouselState(carouselIndex, services)
     }
   }
-
-  async componentDidMount() {
-    this.setState({ loading: true })
-    const response = await fetch('http://10.255.11.201:8090/datos/findDatos');
-    const data = await response.json();
-    this.principalServices = data.services;
-    this.service = data.services[0];
+  // -----------------------------------------------------------
+  prevCarouselItem() {
+    let { carouselIndex, services } = this.state;
+    if (carouselIndex !== 0) {
+      carouselIndex--
+      this.updateCarouselState(carouselIndex, services)
+    }
+  }
+  // -----------------------------------------------------------
+  updateCarouselState(carouselIndex, services) {
     this.setState({
-      services: this.principalServices,
-      service: this.service,
-      loading: false
+      carouselIndex,
+      service: services[carouselIndex]
     })
   }
-
-  nextService = () => {
-    const newIndex = (this.state.service._id) + 1;
-    this.setState({
-      service: this.state.services[newIndex]
-    })
+  // -----------------------------------------------------------
+  handleClick = async (serviceId) => {
+    let { servicesIndex, service } = this.state;
+    const { id  } = service;
+    servicesIndex++;
+    if (servicesIndex > 2) return;
+    if (id === serviceId) { 
+      this.setMockProducts(servicesIndex, id)
+    }
   }
-
-  prevService = () => {
-    const newIndex = (this.state.service._id) - 1;
-    this.setState({
-      service: this.state.services[newIndex]
-    })
+  // -------------------------------------------------------------
+  setMockProducts(servicesIndex, id) {
+    const products = this.state.services.find(item => item.id === id).products;
+    if (products) {
+      this.services[servicesIndex] = products
+      this.updateServices(servicesIndex)
+    }
   }
-
-  handleClick = async (id) => {
-    this.setState({ loading: true })
-    const config = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ "dato": id })
-    };
-    const response = await fetch('http://10.255.11.201:8090/datos/insert', config);
-    const data = await response.json();
-    const keys = Object.keys(data);
-    this.subServices = data[keys[0]];
-    this.service = data[keys[0]][0];
-    this.setState({
-      services: this.subServices,
-      service: this.service,
-      loading: false,
-      count: this.state.count + 1
-    })
+  // -----------------------------------------------------------
+  back() {
+    let { servicesIndex } = this.state;
+    servicesIndex--;
+    if (servicesIndex > -1) {
+      this.updateServices(servicesIndex)
+    } else {
+      this.setState({servicesIndex})
+    }
   }
-
-  backToPrincipal = () => {
-    this.setState({
-      services: this.principalServices,
-      service: this.service,
-      count: this.state.count - 1
-    })
-  }
-
-  // idService(id) {
-  //   this.serviceId = id;
-
-  // }
-
+  // -----------------------------------------------------------
   render() {
-    const { services, service, loading, count } = this.state;
-    if (count < 1) {
+    const { carouselIndex, servicesIndex, services, service, loading } = this.state;
+    const { id } = service;
+
+    if (servicesIndex < 0) {
       return <p className="loading">Página anterior</p>
     }
 
     if (loading) {
       return <p className="loading">Cargando...</p>
     }
-
     return (
-      < div className="App" >
+      <div className="App" >
         <div className="page">
           <div className="col">
-            <div className={`cards-slider active-slide-${service._id}`}>
+            <div className={`cards-slider active-slide-${carouselIndex}`}>
               <div className="cards-slider-wrapper" style={{
-                'transform': `translateX(-${service._id * (100 / services.length)}%)`
+                'transform': `translateX(-${(carouselIndex) * (100/ (services.length))}%)`
               }}>
                 {
-                  services.map(service => <Card key={service._id} service={service} /*idService={this.idService(service._id)}*/ event={() => this.handleClick(service._id)} />)
+                  services.map((service, index) => 
+                    <Card 
+                      key={index} 
+                      index={index}
+                      element={service} 
+                      event={() => this.handleClick(id)}
+                    />
+                  )
                 }
               </div>
             </div>
@@ -109,18 +142,24 @@ class App extends Component {
         </div>
         <div className="buttonContainer">
           <div className="left">
-            <button
-              onClick={() => this.prevService()}
-              disabled={service._id === 0}
-            >Anterior</button>
-            <button onClick={() => this.backToPrincipal()}>Regresar</button>
+            <Button1
+              onClick={this.prevCarouselItem}
+              text="Anterior">
+            </Button1>{/*Button 1*/}
+            <Button1
+              onClick={this.back}
+              text="Regresar">
+            </Button1>{/*Button 1*/}
           </div>
           <div className="right">
-            <button
-              onClick={() => this.nextService()}
-              disabled={service._id === this.state.services.length - 1}
-            >Siguiente</button>
-            {/* <button onClick={() => this.handleClick(this.serviceId)}>Seleccionar</button> */}
+            <Button1
+              onClick={this.nextCarouselItem}
+              text='Siguiente'>
+            </Button1>{/*Button 1*/}
+            <Button1
+              onClick={() => this.handleClick(id)}
+              text='Seleccionar'>
+            </Button1>{/*Button 1*/}
           </div>
         </div>
       </div >
@@ -128,4 +167,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App
