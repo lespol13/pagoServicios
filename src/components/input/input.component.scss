@@ -1,0 +1,32 @@
+
+.service-input {
+    margin: 10px 10px 0 10px;
+    border: 2px solid #255a4d;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50px;
+    box-shadow: 3px 3px 6px #666;
+    animation: pulse 600ms infinite;
+    > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        color: #255a4d;
+    }
+    > div:first-child {
+        background-color: #34bf9c;
+        color: white;
+    }
+
+    @keyframes pulse {
+        0% {
+          border-color: #255a4d;
+        }
+        100% {
+          border-color: yellow;
+        }
+      }
+}
