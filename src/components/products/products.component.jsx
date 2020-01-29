@@ -6,17 +6,7 @@ import Product from '../product/product.component';
 export default class Products extends Component {
   // -----------------------------------------------------
   static propTypes = {
-    onClick: PropTypes.func.isRequired, 
     carouselIndex: PropTypes.number.isRequired   
-  }
-  componentDidMount() {
-    window.addEventListener('keypress', (event) => {
-      console.log(event)
-    }, false);
-  }
-  // -----------------------------------------------------------
-  componentWillUnmount() {
-    window.removeEventListener('keypress', () => {}, false);
   }
   // -----------------------------------------------------------
   render() {

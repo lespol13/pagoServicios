@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
 import './App.scss';
-import Card from './components/card/card.component';
 import Button1 from './components/button1/button.component';
-// import data from './data/services';
-// import data2 from './data/services2';
 // import mock from './data/data.mock';
 import Api from './services/api.service';
-// import services from './data/services';
-// import getServices from './data/servicesFetch'
-import Products from './components/products/products.component';
-import Input from './components/input/input.component';
+import Payment from './services/payment.service';
+import Services from './components/services/services.component';
+import ProductsPage from './components/products-page/products-page.component';
 
 class App extends Component {
   services = [];
   currentCategoryId;
-  currentProduct;
   // -----------------------------------------------------------
   constructor(props) {
     super(props);
@@ -24,26 +19,32 @@ class App extends Component {
       loading: false,
       carouselIndex: 0,
       servicesIndex: 0,
+      showConfirmPage: false,
+      referenceNumber: '',
+      phoneNumber: '',
+      amount: '',
     }
     this.prevCarouselItem = this.prevCarouselItem.bind(this)
     this.nextCarouselItem = this.nextCarouselItem.bind(this)
     this.back = this.back.bind(this)
     this.handleProductClick = this.handleProductClick.bind(this)
-    this.setProduct = this.setProduct.bind(this)
+    this.setPhoneNumber = Payment.setPhoneNumber.bind(this)
+    this.clearPhoneNumber = Payment.clearPhoneNumber.bind(this)
+    this.setReferenceNumber = Payment.setReferenceNumber.bind(this)
+    this.setAmount = Payment.setAmount.bind(this)
+    // this.clearAmount = this.clearAmount.bind(this)
   }
   // -----------------------------------------------------------
   async componentDidMount() {
     console.log('componentDidMount')
     this.setState({ loading: true });
     const data = await Api.getCategories();
-    this.services[0] = data.body[0];
-    console.log(this.services[0])
+    this.services[0] = data.body;
     this.setState({
       services: this.services[0],
       service: this.services[0][0],
       loading: false
     })
-
   }
   // -----------------------------------------------------------
   updateServices(servicesIndex) {
@@ -90,21 +91,41 @@ class App extends Component {
       } else if (servicesIndex === 2) {
         this.getProducts(servicesIndex, this.currentCategoryId, itemId)
       }
-      
     }
+  }
+  // -----------------------------------------------------------
+  handleProductClick() {
+    // const { phoneNumber, servicesIndex, carouselIndex } = this.state
+    // const product = this.services[servicesIndex][carouselIndex];
+    this.showConfirmPage()
+    /*switch (product.paymentType) {
+      case 1:
+        this.showConfirmPage()
+        /*if (this.isPhoneNumberValid(phoneNumber)) {
+          this.showConfirmPage()
+        }
+        break;
+      case 2:
+          break;
+      default:
+    }*/
+  }
+  // -------------------------------------------------------------
+  showConfirmPage() {
+    this.setState({showConfirmPage: true})
   }
   // -------------------------------------------------------------
   async getServices(servicesIndex, categoryId) {
     this.setState({ loading: true })
     const data = await Api.getServices(categoryId)
-    this.services[servicesIndex] = data.body[0]
+    this.services[servicesIndex] = data.body
     this.updateServices(servicesIndex)
   }
   // -------------------------------------------------------------
   async getProducts(servicesIndex, categoryId, serviceId) {
     this.setState({ loading: true });
     const data = await Api.getProducts(categoryId, serviceId);
-    this.services[servicesIndex] = data.body[0][0].products;
+    this.services[servicesIndex] = data.body[0].products;
     this.updateServices(servicesIndex)
   }
   // -------------------------------------------------------------
@@ -125,68 +146,68 @@ class App extends Component {
       this.setState({servicesIndex})
     }
   }
-  // ----------------------------------------------------------------
-  setProduct(product) {
-    console.log('setProduct', product)
-    this.product = product
-  }
-  // ----------------------------------------------------------------
-  handleProductClick() {
-    console.log('handleProductClick')
-  }
-  // ----------------------------------------------------------------
-  servicios(carouselIndex, services, id) {
+  // -----------------------------------------------------------
+  ConfirmPage() {
     return (
-      <div className={`cards-slider active-slide-${carouselIndex}`}>
-        <div className="cards-slider-wrapper" style={{
-          'transform': `translateX(-${(carouselIndex) * (100/ (services.length))}%)`
-        }}>
-          {
-            services.map((service, index) => 
-              <Card 
-                key={index} 
-                index={index}
-                element={service} 
-                event={() => this.handleClick(id)}
-              />
-            )
-          }
+      <div>
+        <p className="loading">Confirma tus datos</p>
+        <div className="buttonContainer">
+            <div className="left">
+              <Button1
+                onClick={this.back}
+                text="Si">
+              </Button1>{/*Button 1*/}
+            </div>
+            <div className="right">
+              <Button1
+                onClick={this.nextCarouselItem}
+                text='NO'>
+              </Button1>{/*Button 1*/}
+            </div>
         </div>
-      </div> 
+      </div>
     )
   }
   // -----------------------------------------------------------
   render() {
-    console.log('render', this.state)
+    // console.log('render', this.state)
 
-    const { carouselIndex, servicesIndex, services, service, loading } = this.state;
+    const { showConfirmPage, amount, referenceNumber, phoneNumber, carouselIndex, servicesIndex, services, service, loading } = this.state;
     const { id } = service;
-    const isProductIndex = servicesIndex === 2;
-
+    const isProductIndex = (servicesIndex === 2);
+    
+    if (showConfirmPage) {
+      return this.ConfirmPage()
+    }
     if (servicesIndex < 0) {
       return <p className="loading">Página anterior</p>
     }
 
-    if (loading || !services) {
+    if (loading) {
       return <p className="loading">Cargando...</p>
     }
-
+    
     return (
       <div className="App" onKeyDown={this.handleKeyDown} >
         <div className="page">
           <div className="col">
-            {servicesIndex < 2 ? (
-              this.servicios(carouselIndex, services, id)
+            {!isProductIndex ? (
+              <Services 
+                services={services}
+                carouselIndex={carouselIndex}
+                onClick={this.handleClick}
+              />
             ) : (
-              <React.Fragment>
-                <Products 
-                  carouselIndex={carouselIndex}
-                  products={services}
-                  onClick={this.setProduct}/>
-                <Input 
-                  text="Número Telefonico"
-                  number="5512345678"/>
-              </React.Fragment>
+              <ProductsPage
+                products={services}
+                carouselIndex={carouselIndex}
+                referenceNumber={referenceNumber}
+                setReferenceNumber={this.setReferenceNumber}
+                phoneNumber={phoneNumber}
+                setPhoneNumber={this.setPhoneNumber}
+                amount={amount}
+                setAmount={this.setAmount}
+              />
             )}
           </div>
         </div>
@@ -196,10 +217,12 @@ class App extends Component {
               onClick={this.prevCarouselItem}
               text="Anterior">
             </Button1>{/*Button 1*/}
-            <Button1
-              onClick={this.back}
-              text="Borrar">
-            </Button1>{/*Button 1*/}
+            {isProductIndex && (
+              <Button1
+                onClick={this.clearPhoneNumber}
+                text="Borrar">
+              </Button1>
+            )}{/*Button 1*/}
             <Button1
               onClick={this.back}
               text="Regresar">
