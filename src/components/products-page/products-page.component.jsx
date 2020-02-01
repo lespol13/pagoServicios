@@ -3,90 +3,61 @@ import PropTypes from 'prop-types';
 import Products from '../products/products.component';
 import Input from '../input/input.component';
 import './products-page.component.scss';
-import Payment from '../../services/payment.service'
 
 export default class ProductosPage extends Component {
     // -----------------------------------------------------------
     constructor(props) {
         super(props)
         this.state = {
-            paymentType: 1
+            paymentType: 1,
+            paymentData: props.payment.toJson()
         }
+        this.props.payment.attach(this)
     }
     // -----------------------------------------------------------
     static propTypes = {
         products: PropTypes.array.isRequired,
         carouselIndex: PropTypes.number.isRequired,
-        phoneNumber: PropTypes.string.isRequired,
-        setPhoneNumber: PropTypes.func.isRequired,
-        referenceNumber: PropTypes.string,
-        setReferenceNumber: PropTypes.func,
-        amount: PropTypes.string,
-        setAmount: PropTypes.func   
+        payment: PropTypes.object.isRequired,
+    }
+    // -----------------------------------------------------------
+    notify(paymentData) {
+        this.setState({paymentData})
+    }
+    // -----------------------------------------------------------
+    componentDidUpdate() {
+        const { payment } = this.props
+        const { paymentData } = this.state
+        const { reference } = paymentData
+
+        switch (payment.inputIndex) {
+            case 2: if (reference.valid) { payment.setInputIndex(3) } break;
+            default:
+        }
     }
     // -----------------------------------------------------------
     componentDidMount() {
-        const { products } = this.props;
-        
-        this.props.setReferenceNumber(String.fromCharCode(32).trim());
-        this.props.setPhoneNumber(String.fromCharCode(32).trim());
-
-        window.addEventListener('keypress', (event) => {
-            const eventKey = event.key
-            //If product type is 1
-            if (products[0].paymentType === 1) {
-                this.setPhoneNumber(eventKey);
-            } 
-            // If product type needs reference and amount
-            else {
-                const { referenceNumber } = this.props;
-                if (!Payment.isReferenceNumberValid(referenceNumber)) {
-                    this.setReferenceNumber(eventKey)
-                } else {
-                    this.setAmount(eventKey)
-                }
-            }
-        }, false);
+        // console.log('componentDidMount')
+        const { products, payment } = this.props;
+        //const paymentType = products[0].paymentType;
+        // this.setState({paymentType})
+        payment.setInputIndex(3)
+        window.addEventListener('keypress', event => this.keyboardListener(event.key), false);
+    }
+    // -----------------------------------------------------------
+    keyboardListener(eventKey) {
+        const { payment } = this.props;
+        payment.addCharToProperty(eventKey)
     }
     // -----------------------------------------------------------
     componentWillUnmount() {
-        window.removeEventListener('keypress', () => {}, false);
-    }
-    // -----------------------------------------------------------
-    validateNumbers(key) {
-        return /[0-9]/.test(key)
-    }
-    // -----------------------------------------------------
-    setPhoneNumber(key) {
-        const { phoneNumber } = this.props;
-        const phoneRegex = /[0-9]{10}/
-        if (this.validateNumbers(key) && !phoneRegex.test(phoneNumber)) {
-            this.props.setPhoneNumber(phoneNumber.concat(key))
-        } 
-    }
-    // -----------------------------------------------------
-    setReferenceNumber(key) {
-        const { referenceNumber } = this.props;
-        const referenceRegex = /[0-9]{9,12}/
-        if (this.validateNumbers(key) && !referenceRegex.test(referenceNumber)) {
-            this.props.setReferenceNumber(referenceNumber.concat(key))
-        } 
-    }
-    // -----------------------------------------------------
-     setAmount(key) {
-        const { amount } = this.props;
-        const amountRegex = /[0-9]{7}/
-        if (this.validateNumbers(key) && !amountRegex.test(amount)) {
-            this.props.setAmount(amount.concat(key))
-        } 
+        window.removeEventListener('keypress', event => this.keyboardListener(event), false);
     }
     // -----------------------------------------------------
     render() {
-        const { carouselIndex, products, phoneNumber, referenceNumber, amount } = this.props;
-        const isReferencePayment = (products[0].paymentType === 2)
-        const isPhoneNumberValid = Payment.isPhoneNumberValid(phoneNumber)
-        const isReferenceNumberValid = Payment.isReferenceNumberValid(referenceNumber)
-        const isAmountValid = Payment.isAmountValid(amount);
+        const { carouselIndex, products } = this.props;
+        const { paymentType, paymentData } = this.state;
+        const isReferencePayment = (paymentType === 2)
         return (
             <React.Fragment>
                 <Products 
@@ -97,19 +68,19 @@ export default class ProductosPage extends Component {
                     <React.Fragment>
                         <Input 
                             text="Referencia"
-                            number={referenceNumber}
-                            valid={isReferenceNumberValid}/>
+                            number={paymentData.reference.value}
+                            valid={paymentData.reference.valid}/>
                         <Input 
                             text="Monto"
                             type='amount'
-                            number={amount}
-                            valid={!isReferenceNumberValid && !isAmountValid}/>
+                            number={paymentData.amount.value}
+                            valid={!paymentData.reference.valid}/>
                     </React.Fragment>
                     ) : (
                         <Input 
                             text="Número Telefonico"
-                            number={phoneNumber}
-                            valid={isPhoneNumberValid}/>
+                            number={paymentData.phoneNumber.value}
+                            valid={paymentData.phoneNumber.valid}/>
                     )}
                 </div>
             </React.Fragment>

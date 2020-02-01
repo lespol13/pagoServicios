@@ -1,11 +1,16 @@
 
-export default class Payment {
+export default class PaymentService {
     static PHONE_NUMBER_LENGTH = 10;
-    static REFERENCE_NUMBER_LEGTH = 10
+    static REFERENCE_NUMBER_LEGTH = 9
     static AMOUNT_NUMBER_LEGTH = 2
+    static PHONE_NUMBER = 'phoneNumber'
     // -----------------------------------------------------------
     static setReferenceNumber(referenceNumber) {
         this.setState({referenceNumber});
+    }
+    // -----------------------------------------------------------
+    static setAttribute(key, value) {
+        this.setState({[key]: value});
     }
     // -----------------------------------------------------------
     static setPhoneNumber(phoneNumber) {
@@ -17,11 +22,11 @@ export default class Payment {
     }
     // -----------------------------------------------------------
     static isAmountValid(value) {
-        return value === Payment.AMOUNT_NUMBER_LEGTH;
+        return value === PaymentService.AMOUNT_NUMBER_LEGTH;
     }
     // -----------------------------------------------------------
     static isPhoneNumberValid(value) {
-        return value.length === Payment.PHONE_NUMBER_LEGTH
+        return value.length === PaymentService.PHONE_NUMBER_LENGTH
     }
     // -----------------------------------------------------------
     static clearPhoneNumber() {
@@ -34,8 +39,32 @@ export default class Payment {
         }
     }
     // -----------------------------------------------------------
+    static clearReferenceNumber() {
+        const { referenceNumber } = this.state;
+        const pl = referenceNumber.length;
+        if (pl > 0) {
+            this.setState({
+                referenceNumber: referenceNumber.substr(0, pl - 1)
+            })
+        }
+    }
+    // -----------------------------------------------------------
+    static clearAmount() {
+        const { amount } = this.state;
+        const pl = amount.length;
+        if (pl > 0) {
+            this.setState({
+                amount: amount.substr(0, pl - 1)
+            })
+        }
+    }
+    // -----------------------------------------------------------
     static isReferenceNumberValid(value) {
-        return value.length === Payment.REFERENCE_NUMBER_LEGTH
+        return value.length === PaymentService.REFERENCE_NUMBER_LEGTH
+    }
+    // -----------------------------------------------------------
+    static setIndexInput(indexInput) {
+        this.setState({indexInput});
     }
     // -----------------------------------------------------------
 
