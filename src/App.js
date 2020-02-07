@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Button1 from './components/button1/button.component';
-// import mock from './data/data.mock';
+import mock from './data/data.mock';
 import Api from './services/api.service';
-import Payment from './services/payment.service';
 import Services from './components/services/services.component';
 import ProductsPage from './components/products-page/products-page.component';
 import Carousel from './services/corousel.service';
@@ -23,7 +22,6 @@ class App extends Component {
       servicesIndex: 0,
       showConfirmPage: false,
       payment: new PaymentModel(),
-      indexInput: 1
     }
     this.back = this.back.bind(this)
     this.handleProductClick = this.handleProductClick.bind(this)
@@ -36,7 +34,6 @@ class App extends Component {
   }
   // -----------------------------------------------------------
   async componentDidMount() {
-    console.log('componentDidMount')
     /*this.setState({ loading: true });
     const data = await Api.getCategories();
     this.services[0] = data.body;
@@ -45,6 +42,27 @@ class App extends Component {
       service: this.services[0][0],
       loading: false
     })*/
+    this.setCategories()
+  }
+  // -----------------------------------------------------------
+  setCategories() {
+    this.services[0] = mock;
+    this.setState({
+      services: this.services[0],
+      service: this.services[0][0],
+    })
+  }
+  // -----------------------------------------------------------
+  changeMockItems(id) {
+    let { servicesIndex } = this.state;
+    if (servicesIndex < 2) {
+      const products = this.services[servicesIndex].find(service => service.id === id).products
+      if (products) {
+        servicesIndex++
+        this.services[servicesIndex] = products
+        this.updateServices(servicesIndex);
+      }
+    }
   }
   // -----------------------------------------------------------
   updateServices(servicesIndex) {
@@ -58,16 +76,17 @@ class App extends Component {
   }
   // -----------------------------------------------------------
   handleClick = async (itemId) => {
-    let { servicesIndex, service } = this.state;
+    let { /*servicesIndex,*/ service } = this.state;
     const { id  } = service;
-    servicesIndex++;
+    //servicesIndex++;
     if (id === itemId) { 
-      if (servicesIndex === 1) {
+      /*if (servicesIndex === 1) {
         this.currentCategoryId = itemId;
         this.getServices(servicesIndex, itemId);
       } else if (servicesIndex === 2) {
         this.getProducts(servicesIndex, this.currentCategoryId, itemId)
-      }
+      }*/
+      this.changeMockItems(itemId)
     }
   }
   // -----------------------------------------------------------
@@ -75,7 +94,7 @@ class App extends Component {
     // const { phoneNumber, servicesIndex, carouselIndex } = this.state
     // const product = this.services[servicesIndex][carouselIndex];
     //this.showConfirmPage()
-    console.log(this.state.payment)
+    console.log(this.state.payment.toJson())
   }
   // -------------------------------------------------------------
   showConfirmPage() {
@@ -113,6 +132,7 @@ class App extends Component {
   }
   // -----------------------------------------------------------
   clearPaymentAttribute() {
+    console.log('clearPaymentAttribute')
     const {payment} = this.state;
     payment.removeCharToProperty()
   }
@@ -138,11 +158,7 @@ class App extends Component {
       <div className="App" onKeyDown={this.handleKeyDown} >
         <div className="page">
           <div className="col">
-          <ProductsPage
-                products={services}
-                carouselIndex={carouselIndex}
-                payment={payment}/>
-            {/*!isProductIndex ? (
+            {!isProductIndex ? (
               <Services 
                 services={services}
                 carouselIndex={carouselIndex}
@@ -152,13 +168,10 @@ class App extends Component {
               <ProductsPage
                 products={services}
                 carouselIndex={carouselIndex}
-                referenceNumber={referenceNumber}
-                phoneNumber={phoneNumber}
-                amount={amount}
-                indexInput={indexInput}
+                payment={payment}
                 setStateItem={this.setStateItem}
               />
-            )*/}
+            )}
           </div>
         </div>
         <div className="buttonContainer">
@@ -169,12 +182,12 @@ class App extends Component {
             </Button1>{/*Button 1*/}
             {isProductIndex && (
               <Button1
-                onClick={this.clearInput}
+                onClick={this.clearPaymentAttribute}
                 text="Borrar">
               </Button1>
             )}{/*Button 1*/}
             <Button1
-              onClick={this.clearPaymentAttribute}
+              onClick={this.back}
               text="Regresar">
             </Button1>{/*Button 1*/}
           </div>

@@ -1,30 +1,42 @@
 export default class ControlModel {
     numberRegex = /[0-9]/
-    value = '';
-    valid = false;
-    validator;
-    notifyObservers
+    name
+    value = ''
+    validator
+    index
+    listeners = []
     // --------------------------------------------------
-    constructor(validator) {
-        this.validator = validator;
-    }
-    // -----------------------------------------------------
-    validateNumber(key) {
-        return this.numberRegex.test(key)
+    constructor(name, validator, index) {
+        this.name = name
+        this.validator = validator
+        this.index = index
     }
     // --------------------------------------------------
-    addChar(char, onSuccess) {
-        if (this.validateNumber(char) && !this.validator.test(this.value)) {
+    subscribe(callback) {
+        this.listeners.push(callback)
+    }
+    // --------------------------------------------------
+    unsubscribe() {
+        // console.log('unsubscribe', this.name)
+        this.listeners = []
+    }
+    // --------------------------------------------------
+    notifyListeners() {
+        this.listeners.forEach(listener => listener(this))
+    }
+    // --------------------------------------------------
+    addChar(char) {
+        if (this.numberRegex.test(char) && !this.validator.test(this.value)) {
             this.value = this.value.concat(char)
-            onSuccess()
+            this.notifyListeners()
         }
     }
     // --------------------------------------------------
-    removeChar(onSuccess) {
+    removeChar() {
         const l = this.length;
         if (l > 0) {
             this.value = this.value.substr(0, l - 1)
-            onSuccess()
+            this.notifyListeners()
         }
     }
     // --------------------------------------------------
@@ -32,11 +44,18 @@ export default class ControlModel {
         return this.value.length
     }
     // --------------------------------------------------
+    get valid() {
+        return this.validator.test(this.value)
+    }
+    // --------------------------------------------------
     toJson() {
         return {
             value: this.value,
-            valid: this.validator.test(this.value)
+            valid: this.valid
         }
     }
     // --------------------------------------------------
+    reset() {
+        this.value = ''
+    }
 }

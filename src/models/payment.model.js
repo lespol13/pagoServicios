@@ -2,43 +2,52 @@
 import Control from  './control.model';
 
 export default class PaymentModel {
-    phoneNumber = new Control(/[0-9]{10}/);
-    reference = new Control(/[0-9]{12}/);
-    amount = new Control(/[0-9]{7}/);
-    PHONE_NUMBER = 'phoneNumber';
-    REFERENCE = 'reference';
-    AMOUNT = 'amount';
+    phoneNumber = new Control('Número Telefonico', /[0-9]{10}/, 1);
+    reference = new Control('Referencia', /[0-9]{12}/, 2);
+    amount = new Control('Monto', /[0-9]{7}/, 3);
     inputIndex = 1;
-    observers = [];
-    // --------------------------------------------------
-    attach(observer) {
-        this.observers.push(observer)
+    listeners = [];
+    constructor() {
+        this.reference.subscribe((reference) => {
+            if (reference.valid) {
+                this.setInputIndex(3)
+            }
+        })
     }
-    // --------------------------------------------------
-    notifyObservers() {
-        this.observers.forEach(observer => observer.notify(this.toJson()))
+    // -----------------------------------------------------------
+    subscribe(listener) {
+        this.listeners.push(listener)
+    }
+    // -----------------------------------------------------------
+    unsubscribe() {
+        this.listeners = []
+    }
+    // -----------------------------------------------------------
+    notifyLIsteners() {
+        this.listeners.forEach(listener => listener())
     }
     // -----------------------------------------------------------
     addCharToProperty(key) {
-        const property = this.currentProperty
-        this[property].addChar(key, this.notifyObservers.bind(this))
+        const control = this.currentControl
+        this[control].addChar(key);
     }
     // -----------------------------------------------------------
     removeCharToProperty() {
-        const property = this.currentProperty
-        this[property].removeChar(this.notifyObservers.bind(this));
+        const control = this.currentControl
+        this[control].removeChar();
     }
     // -----------------------------------------------------------
     setInputIndex(value) {
         this.inputIndex = value;
+        this.notifyLIsteners();
     }
     // -----------------------------------------------------------
-    get currentProperty() {
-        return  this.inputIndex === 2 ? this.REFERENCE : 
-                this.inputIndex === 3 ? this.AMOUNT : 
-                this.PHONE_NUMBER;
+    get currentControl() {
+        return Object.keys(this).find(key => {
+            return (this[key] instanceof Control && this[key].index === this.inputIndex) 
+        })
     }
-    // --------------------------------------------------
+    // -----------------------------------------------------------
     toJson() {
         return {
             phoneNumber: this.phoneNumber.toJson(),

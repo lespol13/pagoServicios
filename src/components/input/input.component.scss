@@ -7,7 +7,7 @@
     grid-template-columns: 50% 50%;
     grid-template-rows: 50px;
     box-shadow: 3px 3px 6px #666;
-    &.invalid{
+    &.active {
       animation: pulse 600ms infinite;
     }
     > div {

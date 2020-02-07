@@ -5,6 +5,13 @@ import PropTypes from 'prop-types';
 import './input.component.scss';
 
 export default class Input extends Component {
+    // -----------------------------------------------------
+    static propTypes = {
+        model: PropTypes.object.isRequired,
+        inputIndex: PropTypes.number,
+        type: PropTypes.string    
+    }
+    // -----------------------------------------------------
     options = {
         style: 'currency', 
         currency: 'MXN',
@@ -12,11 +19,15 @@ export default class Input extends Component {
     }
     currencyFormatter = new Intl.NumberFormat('ex-MX', this.options)
     // -----------------------------------------------------
-    static propTypes = {
-        text: PropTypes.string.isRequired,
-        number: PropTypes.string.isRequired,
-        valid: PropTypes.bool.isRequired,
-        type: PropTypes.string    
+    componentDidMount() {
+        const { model } = this.props;
+        model.reset()
+        model.subscribe(() => this.forceUpdate())
+    }
+    // -----------------------------------------------------
+    componentWillUnmount() {
+        const { model } = this.props;
+        model.unsubscribe()
     }
     // -----------------------------------------------------
     amountFormat(value) {
@@ -42,15 +53,18 @@ export default class Input extends Component {
     }
     // -----------------------------------------------------
     render() {
-        let {text, number, valid, type} = this.props;
-        const clazz = !valid ? 'invalid' : null;
+        const { inputIndex, type, model } = this.props;
+        let { name, value, valid, index } = model;
+        const clazz = inputIndex === index && !valid ? 'active' : null;
+
         if (type === 'amount') {
-            number = this.amountFormat(number); 
+            value = this.amountFormat(model.value); 
         }
+
         return (
             <div className={`service-input ${clazz}`}>
-                <div>{text}</div>
-                <div>{number}</div>
+                <div>{name}</div>
+                <div>{value}</div>
             </div>
         )
     }
